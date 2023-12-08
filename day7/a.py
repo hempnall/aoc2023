@@ -11,17 +11,35 @@ def hand_type( hand ):
             hand_hist[c]=1
         else:
             hand_hist[c] += 1
+
     s_hand_hist=sorted(hand_hist.items(), key=lambda x:x[1],reverse=True)
-    if s_hand_hist[0][1]==5:
+    if "J" in hand_hist:
+        cnt=hand_hist["J"]
+        if cnt == 5:
+            pass
+        else:
+            print("========")
+            print(hand)
+            print(s_hand_hist)
+            hand_hist["J"] -= cnt
+            highest=s_hand_hist[0][0]
+            if highest=="J":
+                hand_hist[s_hand_hist[1][0]] += cnt
+            else:
+                hand_hist[s_hand_hist[0][0]] += cnt
+            s_hand_hist=sorted(hand_hist.items(), key=lambda x:x[1],reverse=True)
+            print(s_hand_hist)
+
+    if s_hand_hist[0][1] ==5:
         return 7
-    elif s_hand_hist[0][1]==4:
+    elif s_hand_hist[0][1] ==4:
         return 6
-    elif s_hand_hist[0][1]==3:
+    elif s_hand_hist[0][1] ==3:
         if s_hand_hist[1][1]==2:
             return 5
         else:
             return 4
-    elif s_hand_hist[0][1]==2:
+    elif s_hand_hist[0][1] ==2:
         if s_hand_hist[1][1]==2:
             return 3
         else:
@@ -30,7 +48,7 @@ def hand_type( hand ):
         return 1
         
 def cards_to_number_arr( hand ):
-    return hand.replace("A","E").replace("J","B") \
+    return hand.replace("A","E").replace("J","1") \
                 .replace("K","D") \
                 .replace("Q","C") \
                 .replace("T","A") \
