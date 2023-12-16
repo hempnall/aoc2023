@@ -1,5 +1,6 @@
 #! /iusr/bin/env python
-f = open("/Users/jameshook/dev/aoc2023/day14/sample.txt","r")
+import sys
+f = open("/Users/jameshook/dev/aoc2023/day14/input.txt","r")
 lines = [ l.strip() for l in f.readlines() ]
 
 NORTH=(0,-1)
@@ -106,13 +107,25 @@ square_rocks= add_edges(square_rocks)
 
 
 CYCLES_MAP={}
-for idx in range(0,30):
+for idx in range(0,300):
     round_rocks, key = rotate_once(square_rocks,round_rocks)
     print_rocks(square_rocks,round_rocks)
     if not key in CYCLES_MAP:
         CYCLES_MAP[key] = [ idx ]
     else:
         CYCLES_MAP[key].append(idx)
+        THE_MAP = CYCLES_MAP[key]
+        if len(THE_MAP) > 3:
+            last_gap=THE_MAP[-1] - THE_MAP[-2]
+            pen_gap=THE_MAP[-2] - THE_MAP[-3]
+            pen_pen_gap=THE_MAP[-3] - THE_MAP[-4]
+            print(f'{last_gap} {pen_gap} {pen_pen_gap}')
+            if ( ITERAIONS - (THE_MAP[-1] + 1)  ) % pen_gap == 0:
+                if ( ITERAIONS - ( THE_MAP[-2] + 1) ) % pen_pen_gap == 0:   
+                    print(key[3])
+                    sys.exit(1)         
+
+        
 
 print(CYCLES_MAP)
 print(load(round_rocks))
